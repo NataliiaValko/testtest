@@ -2,6 +2,7 @@ import './css/styles.css';
 import Notiflix from 'notiflix';
 import debounce from 'lodash.debounce';
 // import fetchCountries from "./js/fetchCountries.js"
+import fetchCountries from './js/fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -25,27 +26,30 @@ function onInput(e) {
   }
 }
 
-// fetchCountries(inputValue)
-//     .then(response => {
-//         const quantityValue = response.length;
+fetchCountries(inputValue)
+  .then(response => {
+    const quantityValue = response.length;
 
-//         if (quantityValue > 10) {
-//             Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
-//         } else if (quantityValue > 2 && quantityValue < 10) {
-//             clearInf(containerEl);
-//             listEl.innerHTML = createInf(response)
-//         } else if (quantityValue === 1) {
-//             clearInf(listEl);
-//             containerEl.innerHTML = createUl(response[0])
-//         }
-//     }).catch(error => {
-//         clearInf(containerEl);
-//         clearInf(listEl);
+    if (quantityValue > 10) {
+      Notiflix.Notify.info(
+        'Too many matches found. Please enter a more specific name.'
+      );
+    } else if (quantityValue > 2 && quantityValue < 10) {
+      clearInf(containerEl);
+      listEl.innerHTML = createInf(response);
+    } else if (quantityValue === 1) {
+      clearInf(listEl);
+      containerEl.innerHTML = createUl(response[0]);
+    }
+  })
+  .catch(error => {
+    clearInf(containerEl);
+    clearInf(listEl);
 
-//         if (error.message === "404") {
-//             Notiflix.Notify.failure('Oops, there is no country with that name');
-//         }
-// })
+    if (error.message === '404') {
+      Notiflix.Notify.failure('Oops, there is no country with that name');
+    }
+  });
 
 function clearInf(elem) {
   elem.innerHTML = '';
